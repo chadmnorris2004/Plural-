@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Plural Power!</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: #e0f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00796b;
+      font-size: 2.5rem;
+    }
+
+    p {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .word-bank, .drop-zone {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 900px;
+    }
+
+    .card, .drop {
+      background: #ffffff;
+      border: 2px dashed #00796b;
+      padding: 12px;
+      text-align: center;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      cursor: grab;
+      transition: background 0.3s ease;
+    }
+
+    .card:hover {
+      background: #b2ebf2;
+    }
+
+    .drop {
+      background: #f1f8e9;
+      min-height: 50px;
+    }
+
+    .correct {
+      background-color: #c8e6c9 !important;
+    }
+
+    .wrong {
+      background-color: #ffcdd2 !important;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🌟 Plural Power! 🌟</h1>
+<p>Drag the correct plural noun onto its matching singular noun!</p>
+
+<div class="container">
+  <div class="word-bank" id="wordBank">
+    <div class="card" draggable="true" id="children">children</div>
+    <div class="card" draggable="true" id="geese">geese</div>
+    <div class="card" draggable="true" id="feet">feet</div>
+    <div class="card" draggable="true" id="teeth">teeth</div>
+    <div class="card" draggable="true" id="mice">mice</div>
+    <div class="card" draggable="true" id="men">men</div>
+    <div class="card" draggable="true" id="women">women</div>
+    <div class="card" draggable="true" id="oxen">oxen</div>
+    <div class="card" draggable="true" id="dice">dice</div>
+    <div class="card" draggable="true" id="leaves">leaves</div>
+  </div>
+
+  <div class="drop-zone">
+    <div class="drop" data-match="children">child</div>
+    <div class="drop" data-match="geese">goose</div>
+    <div class="drop" data-match="feet">foot</div>
+    <div class="drop" data-match="teeth">tooth</div>
+    <div class="drop" data-match="mice">mouse</div>
+    <div class="drop" data-match="men">man</div>
+    <div class="drop" data-match="women">woman</div>
+    <div class="drop" data-match="oxen">ox</div>
+    <div class="drop" data-match="dice">die</div>
+    <div class="drop" data-match="leaves">leaf</div>
+  </div>
+</div>
+
+<p class="footer-note">🎉 Keep going! Let’s master those tricky plurals!</p>
+
+<!-- Reliable sound files -->
+<audio id="correctSound" src="https://cdn.freesound.org/previews/256/256113_3263906-lq.mp3" preload="auto"></audio>
+<audio id="wrongSound" src="https://cdn.freesound.org/previews/256/256114_3263906-lq.mp3" preload="auto"></audio>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.card');
+    const drops = document.querySelectorAll('.drop');
+    const correctSound = document.getElementById('correctSound');
+    const wrongSound = document.getElementById('wrongSound');
+
+    cards.forEach(card => {
+      card.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', card.id);
+      });
+    });
+
+    drops.forEach(drop => {
+      drop.addEventListener('dragover', e => {
+        e.preventDefault();
+      });
+
+      drop.addEventListener('drop', e => {
+        const droppedId = e.dataTransfer.getData('text/plain');
+        const droppedEl = document.getElementById(droppedId);
+        if (drop.dataset.match === droppedId) {
+          drop.classList.add('correct');
+          drop.textContent = droppedEl.textContent;
+          droppedEl.remove();
+          correctSound.currentTime = 0;
+          correctSound.play();
+        } else {
+          drop.classList.add('wrong');
+          wrongSound.currentTime = 0;
+          wrongSound.play();
+          setTimeout(() => drop.classList.remove('wrong'), 1000);
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
