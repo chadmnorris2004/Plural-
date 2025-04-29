@@ -2,124 +2,313 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Plural Power!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plural Power! - Grade 3 Levels</title>
   <style>
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
       background: #e0f7fa;
       margin: 0;
       padding: 20px;
+      font-size: 26px;
+      line-height: 1.4;
     }
-
+    
     h1 {
       text-align: center;
       color: #00796b;
-      font-size: 2.5rem;
+      font-size: 2.5em;
+      margin-bottom: 15px;
     }
-
-    p {
+    
+    #level-selector {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .level-btn {
+      background: #00796b;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .level-btn:hover {
+      background: #00695c;
+      transform: scale(1.05);
+    }
+    
+    .level-btn.active {
+      background: #004d40;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    
+    #progressTracker {
       text-align: center;
-      font-size: 1.2rem;
-      color: #333;
+      font-size: 1.2em;
+      color: #00796b;
+      margin: 20px 0;
+      font-weight: bold;
     }
-
+    
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 20px;
+      margin-top: 25px;
     }
-
+    
     .word-bank, .drop-zone {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 15px;
-      margin: 20px auto;
-      width: 90%;
-      max-width: 900px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 25px;
+      margin: 30px auto;
+      width: 95%;
+      max-width: 1000px;
     }
-
+    
     .card, .drop {
       background: #ffffff;
-      border: 2px dashed #00796b;
-      padding: 12px;
+      border: 3px dashed #00796b;
+      padding: 20px;
       text-align: center;
-      font-size: 1.1rem;
-      border-radius: 12px;
+      font-size: 1em;
+      border-radius: 15px;
       cursor: grab;
-      transition: background 0.3s ease;
+      transition: all 0.3s;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-
+    
     .card:hover {
       background: #b2ebf2;
+      transform: scale(1.05);
     }
-
+    
     .drop {
       background: #f1f8e9;
-      min-height: 50px;
     }
-
+    
     .correct {
       background-color: #c8e6c9 !important;
+      border-style: solid;
+      border-width: 3px;
     }
-
+    
     .wrong {
       background-color: #ffcdd2 !important;
+      animation: shake 0.5s;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    
+    .celebration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,121,107,0.8);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      font-size: 1.5em;
+    }
+    
+    .celebration h2 {
+      color: white;
+      font-size: 2em;
+      text-align: center;
+      margin-bottom: 20px;
     }
 
-    .footer-note {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #555;
-      margin-top: 40px;
+    @media (max-width: 768px) {
+      body { font-size: 22px; }
+      .level-btn { padding: 12px 20px; }
+    }
+
+    @media (max-width: 480px) {
+      body { font-size: 20px; }
+      h1 { font-size: 2em; }
+      .card, .drop { min-height: 70px; }
     }
   </style>
 </head>
 <body>
 
 <h1>🌟 Plural Power! 🌟</h1>
-<p>Drag the correct plural noun onto its matching singular noun!</p>
-
-<div class="container">
-  <div class="word-bank" id="wordBank">
-    <div class="card" draggable="true" id="children">children</div>
-    <div class="card" draggable="true" id="geese">geese</div>
-    <div class="card" draggable="true" id="feet">feet</div>
-    <div class="card" draggable="true" id="teeth">teeth</div>
-    <div class="card" draggable="true" id="mice">mice</div>
-    <div class="card" draggable="true" id="men">men</div>
-    <div class="card" draggable="true" id="women">women</div>
-    <div class="card" draggable="true" id="oxen">oxen</div>
-    <div class="card" draggable="true" id="dice">dice</div>
-    <div class="card" draggable="true" id="leaves">leaves</div>
-  </div>
-
-  <div class="drop-zone">
-    <div class="drop" data-match="children">child</div>
-    <div class="drop" data-match="geese">goose</div>
-    <div class="drop" data-match="feet">foot</div>
-    <div class="drop" data-match="teeth">tooth</div>
-    <div class="drop" data-match="mice">mouse</div>
-    <div class="drop" data-match="men">man</div>
-    <div class="drop" data-match="women">woman</div>
-    <div class="drop" data-match="oxen">ox</div>
-    <div class="drop" data-match="dice">die</div>
-    <div class="drop" data-match="leaves">leaf</div>
-  </div>
+<div id="level-selector">
+  <button class="level-btn" data-level="1">Level 1: Easy</button>
+  <button class="level-btn" data-level="2">Level 2: Medium</button>
+  <button class="level-btn" data-level="3">Level 3: Hard</button>
+  <button class="level-btn" data-level="4">Level 4: Expert</button>
+  <button class="level-btn" data-level="5">Level 5: Master</button>
 </div>
 
-<p class="footer-note">🎉 Keep going! Let’s master those tricky plurals!</p>
+<div id="progressTracker">Matches: <span id="score">0</span>/<span id="total">10</span></div>
+<p style="text-align: center; margin-top: 0;">Drag the plural nouns to match their singular forms!</p>
 
-<!-- Reliable sound files -->
-<audio id="correctSound" src="https://cdn.freesound.org/previews/256/256113_3263906-lq.mp3" preload="auto"></audio>
-<audio id="wrongSound" src="https://cdn.freesound.org/previews/256/256114_3263906-lq.mp3" preload="auto"></audio>
+<div class="container">
+  <div class="word-bank" id="wordBank"></div>
+  <div class="drop-zone" id="dropZone"></div>
+</div>
+
+<div class="celebration" id="celebration">
+  <h2>🎉 Level Complete! 🎉</h2>
+  <p style="color: white; font-size: 1.2em;" id="celebrationText">You matched all the plurals!</p>
+  <button class="level-btn" id="nextLevelBtn" style="margin-top: 20px;">Next Level</button>
+</div>
+
+<audio id="correctSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+<audio id="wrongSound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  // Game Data - 5 Levels of Difficulty
+  const levels = {
+    1: { // Easy - Regular plurals (add -s)
+      pairs: [
+        { singular: "dog", plural: "dogs" },
+        { singular: "cat", plural: "cats" },
+        { singular: "book", plural: "books" },
+        { singular: "tree", plural: "trees" },
+        { singular: "car", plural: "cars" },
+        { singular: "ball", plural: "balls" },
+        { singular: "apple", plural: "apples" },
+        { singular: "pencil", plural: "pencils" },
+        { singular: "chair", plural: "chairs" },
+        { singular: "flower", plural: "flowers" }
+      ],
+      hint: "Just add -s!"
+    },
+    2: { // Medium - Regular plurals (add -es)
+      pairs: [
+        { singular: "box", plural: "boxes" },
+        { singular: "bus", plural: "buses" },
+        { singular: "brush", plural: "brushes" },
+        { singular: "dish", plural: "dishes" },
+        { singular: "fox", plural: "foxes" },
+        { singular: "bench", plural: "benches" },
+        { singular: "glass", plural: "glasses" },
+        { singular: "wish", plural: "wishes" },
+        { singular: "peach", plural: "peaches" },
+        { singular: "kiss", plural: "kisses" }
+      ],
+      hint: "Add -es when words end with s, sh, ch, x!"
+    },
+    3: { // Hard - Irregular plurals (common)
+      pairs: [
+        { singular: "child", plural: "children" },
+        { singular: "foot", plural: "feet" },
+        { singular: "tooth", plural: "teeth" },
+        { singular: "mouse", plural: "mice" },
+        { singular: "goose", plural: "geese" },
+        { singular: "man", plural: "men" },
+        { singular: "woman", plural: "women" },
+        { singular: "person", plural: "people" },
+        { singular: "leaf", plural: "leaves" },
+        { singular: "knife", plural: "knives" }
+      ],
+      hint: "These change completely! No pattern!"
+    },
+    4: { // Expert - Mixed irregular
+      pairs: [
+        { singular: "ox", plural: "oxen" },
+        { singular: "die", plural: "dice" },
+        { singular: "cactus", plural: "cacti" },
+        { singular: "focus", plural: "foci" },
+        { singular: "radius", plural: "radii" },
+        { singular: "fungus", plural: "fungi" },
+        { singular: "nucleus", plural: "nuclei" },
+        { singular: "syllabus", plural: "syllabi" },
+        { singular: "analysis", plural: "analyses" },
+        { singular: "crisis", plural: "crises" }
+      ],
+      hint: "Latin/Greek origins - tricky endings!"
+    },
+    5: { // Master - Most challenging
+      pairs: [
+        { singular: "deer", plural: "deer" },
+        { singular: "sheep", plural: "sheep" },
+        { singular: "fish", plural: "fish" },
+        { singular: "moose", plural: "moose" },
+        { singular: "aircraft", plural: "aircraft" },
+        { singular: "series", plural: "series" },
+        { singular: "species", plural: "species" },
+        { singular: "offspring", plural: "offspring" },
+        { singular: "salmon", plural: "salmon" },
+        { singular: "trout", plural: "trout" }
+      ],
+      hint: "These don't change at all! Same word!"
+    }
+  };
+
+  // Game Variables
+  let currentLevel = 1;
+  let score = 0;
+  const correctSound = document.getElementById('correctSound');
+  const wrongSound = document.getElementById('wrongSound');
+  const celebration = document.getElementById('celebration');
+  const celebrationText = document.getElementById('celebrationText');
+  const nextLevelBtn = document.getElementById('nextLevelBtn');
+
+  // Initialize Game
+  function initGame(level) {
+    currentLevel = level;
+    score = 0;
+    document.getElementById('score').textContent = score;
+    document.getElementById('total').textContent = levels[level].pairs.length;
+    
+    // Update active level button
+    document.querySelectorAll('.level-btn').forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.dataset.level) === level);
+    });
+    
+    // Clear previous cards
+    document.getElementById('wordBank').innerHTML = '';
+    document.getElementById('dropZone').innerHTML = '';
+    
+    // Create new cards
+    levels[level].pairs.forEach(pair => {
+      // Plural cards (draggable)
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.textContent = pair.plural;
+      card.id = pair.plural.replace(/\s+/g, '-');
+      card.draggable = true;
+      document.getElementById('wordBank').appendChild(card);
+      
+      // Singular drop zones
+      const drop = document.createElement('div');
+      drop.className = 'drop';
+      drop.textContent = pair.singular;
+      drop.dataset.match = card.id;
+      document.getElementById('dropZone').appendChild(drop);
+    });
+    
+    // Set up event listeners
+    setupDragAndDrop();
+  }
+
+  // Drag and Drop Functionality
+  function setupDragAndDrop() {
     const cards = document.querySelectorAll('.card');
     const drops = document.querySelectorAll('.drop');
-    const correctSound = document.getElementById('correctSound');
-    const wrongSound = document.getElementById('wrongSound');
 
     cards.forEach(card => {
       card.addEventListener('dragstart', e => {
@@ -133,14 +322,24 @@
       });
 
       drop.addEventListener('drop', e => {
+        e.preventDefault();
         const droppedId = e.dataTransfer.getData('text/plain');
         const droppedEl = document.getElementById(droppedId);
+        
         if (drop.dataset.match === droppedId) {
           drop.classList.add('correct');
           drop.textContent = droppedEl.textContent;
           droppedEl.remove();
           correctSound.currentTime = 0;
           correctSound.play();
+          
+          score++;
+          document.getElementById('score').textContent = score;
+          
+          if(score === levels[currentLevel].pairs.length) {
+            celebrationText.textContent = `Level ${currentLevel} Complete! ${levels[currentLevel].hint}`;
+            celebration.style.display = 'flex';
+          }
         } else {
           drop.classList.add('wrong');
           wrongSound.currentTime = 0;
@@ -149,7 +348,30 @@
         }
       });
     });
+  }
+
+  // Level Selection
+  document.querySelectorAll('.level-btn').forEach(btn => {
+    if (btn.id !== 'nextLevelBtn') {
+      btn.addEventListener('click', () => {
+        initGame(parseInt(btn.dataset.level));
+      });
+    }
   });
+
+  // Next Level Button
+  nextLevelBtn.addEventListener('click', () => {
+    celebration.style.display = 'none';
+    if (currentLevel < 5) {
+      initGame(currentLevel + 1);
+    } else {
+      // If completed all levels, return to Level 1
+      initGame(1);
+    }
+  });
+
+  // Start with Level 1
+  initGame(1);
 </script>
 
 </body>
